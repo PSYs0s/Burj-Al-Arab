@@ -7,8 +7,8 @@ import { useHistory, useLocation } from 'react-router';
 
 const Login = () => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext)
-    const history=useHistory()
-    const location=useLocation()
+    const history = useHistory()
+    const location = useLocation()
     const { from } = location.state || { from: { pathname: "/" } };
     if (firebase.apps.length === 0) {
         firebase.initializeApp(firebaseConfig);
@@ -23,8 +23,6 @@ const Login = () => {
                 const signInUser = { name: displayName, email }
                 setLoggedInUser(signInUser)
                 storeAuthToekn()
-                history.replace(from)
-
             }).catch((error) => {
 
                 var errorCode = error.code;
@@ -36,13 +34,14 @@ const Login = () => {
 
             });
     }
-    const storeAuthToekn=()=>{
+    const storeAuthToekn = () => {
         firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-        .then(function(idToken) {
-            sessionStorage.setItem('token',idToken)
-          }).catch(function(error) {
-            // Handle error
-          });
+            .then(function (idToken) {
+                sessionStorage.setItem('token', idToken)
+                history.replace(from)
+            }).catch(function (error) {
+                // Handle error
+            });
     }
     return (
         <div>
